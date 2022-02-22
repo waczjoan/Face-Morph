@@ -49,7 +49,7 @@ def add_to_sym(symmetry, temp_reight, temp_left, reverse = True):
 
 def left_face_side_106_points(landmarks): 
     LEFT_FACE_SIDE =  landmarks['LEFT_EYEBROWN'] +\
-        landmarks['CONTOURS'][:int(len(landmarks['CONTOURS'])/2)] +\
+        landmarks['CONTOURS'][:int(len(landmarks['CONTOURS'])/2)+1] +\
         landmarks['TEETH'][int(len(landmarks['TEETH'])*3/4):] + \
         landmarks['TEETH'][:int(len(landmarks['TEETH'])*1/4 + 1)] +\
         landmarks['UPPER_LIP'][:int(len(landmarks['UPPER_LIP'])*1/2 + 1)] + \
@@ -69,8 +69,8 @@ def left_face_side_106_points(landmarks):
 def landmarks_106_symmetry(landmarks):
     symmetry = {}
     for i in range(int(len(landmarks['CONTOURS'])/2)+1):
-        symmetry[landmarks['CONTOURS'][i]] = landmarks['CONTOURS'][-i]
-        symmetry[landmarks['CONTOURS'][-i]] = landmarks['CONTOURS'][i]
+        symmetry[landmarks['CONTOURS'][i]] = landmarks['CONTOURS'][-i-1]
+        symmetry[landmarks['CONTOURS'][-i-1]] = landmarks['CONTOURS'][i]
 
 
     symmetry = add_to_sym(symmetry, landmarks['REIGHT_EYEBROWN'][:5], landmarks['LEFT_EYEBROWN'][:5])
@@ -104,6 +104,8 @@ class Landmarks():
     def base_information(self):
         if len(self.landmarks_array) == 106:
             self.points_info, self.symmetry = get_info_106_points()
+            self.symmetry_line = [i for i in self.symmetry.keys() if i == self.symmetry[i]]
 
     def __call__(self):
         return self.landmarks_array
+    

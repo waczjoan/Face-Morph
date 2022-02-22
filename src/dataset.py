@@ -23,6 +23,6 @@ def read_folder(path, images = 'images', labels = False, landmarks = False, n = 
     if landmarks != False:
         for key in images:
             with open(f'{path}/{landmarks}/{key}.txt') as f:
-                landmark = [line[:-1].split(' ') for line in f][1:]
+                landmark = [line.replace('\n', '').split(' ') for line in f][1:]
             images[key]['landmarks'] = Landmarks(np.array(landmark).astype(float))
     return images
