@@ -1,7 +1,8 @@
 import matplotlib.pyplot as plt
+from scipy.stats import pearsonr
 
-def plot_img(image, ax = plt, title = None):
-    ax.imshow(image)
+def plot_img(image, ax = plt, title = None, alpha = 1):
+    ax.imshow(image, alpha = alpha)
     ax.axis('off')
     if title is not None:
         if ax == plt:
@@ -24,3 +25,18 @@ def plot_landmarks_color(landmarks):
         plt.plot(r[landmarks_point_info['TEETH'],0], r[landmarks_point_info['TEETH'],1], '.', color =  'yellow')
         if 'EYE' in landmarks_point_info.keys():
             plt.plot(r[landmarks_point_info['EYE'],0], r[landmarks_point_info['EYE'],1], '.', color =  'tab:blue')
+            
+            
+def plot_corr(x, y, cmap = plt.get_cmap('RdBu'), norm = plt.Normalize(vmin=-.5, vmax=.5),**kwds):
+    ax = plt.gca()
+    r, _ = pearsonr(x, y)
+    facecolor = cmap(norm(r))
+    ax.set_facecolor(facecolor)
+    lightness = (max(facecolor[:3]) + min(facecolor[:3]) ) / 2
+    ax.annotate(f"r={r:.2f}", xy=(.5, .5), xycoords=ax.transAxes,
+                color='white' if lightness < 0.7 else 'black', size=26, ha='center', va='center')
+    
+def plot_hist_with_component(component, ax = plt, label = ""):
+     _ = ax.hist(component.flatten(), 
+                          bins = int(len(set(component.flatten()))/2),
+                          label = label, density = True, alpha = 0.7)
