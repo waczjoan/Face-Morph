@@ -44,17 +44,30 @@ def get_info_106_points():
 
 
 def get_info_468_points():
+    
+    
+    lips = np.array(list(set(np.array(list(mp.solutions.face_mesh.FACEMESH_LIPS)).flatten())))
+    up = lips[[0,1,2, 10, 12, 13, 14, 15,  26,22]]
+    down = lips[[6, 8, 39, 9, 18, 23, 28, 34, 37]]
+    teeth = lips[[4, 5, 7, 16, 19,17, 20, 21, 24, 25, 27, 29, 30, 33, 35, 36, 38 , 31, 32,11]]
+    
+    nose_line = [1,2,4,5, 6, 19, 195, 197, 94]
+    nose_R = [196, 174, 217, 3, 236, 51, 134, 198, 126, 209, 131, 45, 220,
+              115, 49, 102, 48, 44, 238, 20, 241, 242, 125, 141, 239, 237, 218]
+    nose_L = [419, 399, 437, 248, 456, 281, 363 , 420, 355, 429, 360, 275, 440, 
+              344, 279, 278, 294, 274, 458, 250, 461, 462, 354, 370, 459, 309, 438]
+    
     landmarks_468_points = {
         'CONTOURS' : list(set(np.array(list(mp.solutions.face_mesh.FACEMESH_FACE_OVAL)).flatten())), 
         'LEFT_EYEBROWN' : list(set(np.array(list(mp.solutions.face_mesh.FACEMESH_LEFT_EYEBROW)).flatten())),
         'REIGHT_EYEBROWN' : list(set(np.array(list(mp.solutions.face_mesh.FACEMESH_RIGHT_EYEBROW)).flatten())),
-        'NOSE_POINTS' : list(set(np.array(list(mp.solutions.face_mesh.FACEMESH_LIPS)).flatten())), #####
-        'NOSE_LINE_POINTS' : list(set(np.array(list(mp.solutions.face_mesh.FACEMESH_LIPS )).flatten())), #####
+        'NOSE_POINTS' : nose_R  + nose_L + nose_line, 
+        'NOSE_LINE_POINTS' : nose_line, 
         'LEFT_EYE' : list(set(np.array(list(mp.solutions.face_mesh.FACEMESH_LEFT_EYE)).flatten())), 
         'REIGHT_EYE' : list(set(np.array(list(mp.solutions.face_mesh.FACEMESH_RIGHT_EYE)).flatten())),  
-        'UPPER_LIP' : list(set(np.array(list(mp.solutions.face_mesh.FACEMESH_LIPS)).flatten())), #####
-        'BOTTOM_LIP' : list(set(np.array(list(mp.solutions.face_mesh.FACEMESH_LIPS)).flatten())), #####
-        'TEETH' : list(set(np.array(list(mp.solutions.face_mesh.FACEMESH_LIPS)).flatten())), ########
+        'UPPER_LIP' : up, 
+        'BOTTOM_LIP' : down, 
+        'TEETH' : teeth, 
     }
     #LEFT_FACE_SIDE, REIGHT_FACE_SIDE = left_face_side_106_points(landmarks_106_points)
     #landmarks_468_points['LEFT_FACE_SIDE'] = LEFT_FACE_SIDE
@@ -109,6 +122,10 @@ def left_face_side_68_points(landmarks):
         landmarks['REIGHT_EYE'] + landmarks['NOSE_LINE_POINTS'] + \
         landmarks['NOSE_POINTS'][int(len(landmarks['NOSE_POINTS'])/2)+2:]
     return LEFT_FACE_SIDE, REIGHT_FACE_SIDE
+
+def left_face_side_408_points(landmarks): 
+    sym_line = [0,1,2,4,5,6,8,9,10,11,12,13,14,15,16,17,18,19]
+
 
 
 def landmarks_106_symmetry(landmarks):
