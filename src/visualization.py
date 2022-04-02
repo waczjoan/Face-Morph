@@ -1,8 +1,11 @@
 import matplotlib.pyplot as plt
 from scipy.stats import pearsonr
 
-def plot_img(image, ax = plt, title = None, alpha = 1):
-    ax.imshow(image, alpha = alpha)
+def plot_img(image, ax = plt, title = None, alpha = 1, cmap=None):
+    if type(cmap) == str:
+        ax.imshow(image, alpha = alpha, cmap = cmap)
+    else:
+        ax.imshow(image, alpha = alpha)
     ax.axis('off')
     if title is not None:
         if ax == plt:
